@@ -31,10 +31,6 @@ def main():
 
     application.add_handler(conv_handler)
 
-    # Обработчики для остальных кнопок
-    application.add_handler(CallbackQueryHandler(button_handler, pattern=f"^{MENU_CALLBACK_SHOW_LINKS}$"))
-    application.add_handler(CallbackQueryHandler(button_handler, pattern=f"^{MENU_CALLBACK_DELETE_ALL_LINKS}$"))
-
     # Запускаем бота в режиме polling
     application.run_polling()
 
