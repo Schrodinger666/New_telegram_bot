@@ -1,5 +1,5 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes, ConversationHandler
+from telegram.ext import ContextTypes
 from config import CHAT_ID
 from link_manager import link_name_exists, add_link, get_links_info, delete_all_links
 
@@ -13,14 +13,14 @@ ASKING_LINK_NAME = 1
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Приветственное сообщение и показ обновлённого меню."""
     
-    # Отправка приветственного сообщения перед меню
+    # Отправка приветственного сообщения
     await update.message.reply_text(
-        "**Привет! Я - 🎓Decentrathon Link Bot🚀🎓.**\n\n"
+        "Привет! Я - 🎓Decentrathon Link Bot🚀🎓.\n\n"
         "Сидишь в нашем канале? Пригласи больше народу!\n"
-        "Пропиши команду /start для начала!",
-        parse_mode='Markdown'  # Корректное использование parse_mode
+        "Пропиши команду /start для начала!"
     )
-    
+
+    # Отправка основного меню
     menu_keyboard = [
         [
             InlineKeyboardButton("Создать уникальную ссылку", callback_data=MENU_CALLBACK_CREATE_LINK),
