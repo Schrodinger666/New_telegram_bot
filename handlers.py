@@ -12,14 +12,23 @@ ASKING_LINK_NAME = 1
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Приветственное сообщение и показ обновлённого меню."""
+    
+    # Отправка приветственного сообщения перед меню
+    await update.message.reply_text(
+        "**Привет! Я - 🎓Decentrathon Link Bot🚀🎓.**\n\n"
+        "Сидишь в нашем канале? Пригласи больше народу!\n"
+        "Пропиши команду /start для начала!",
+        parse_mode='Markdown'  # Корректное использование parse_mode
+    )
+    
     menu_keyboard = [
         [
-            InlineKeyboardButton("Создать новую ссылку", callback_data=MENU_CALLBACK_CREATE_LINK),
+            InlineKeyboardButton("Создать уникальную ссылку", callback_data=MENU_CALLBACK_CREATE_LINK),
         ]
     ]
     reply_markup = InlineKeyboardMarkup(menu_keyboard)
     await update.message.reply_text(
-        "Привет! Выберите действие:",
+        "Выберите действие:",
         reply_markup=reply_markup
     )
 
