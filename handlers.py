@@ -23,9 +23,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Отправка основного меню
     menu_keyboard = [
         [
-            InlineKeyboardButton("Создать уникальную ссылку", callback_data=MENU_CALLBACK_CREATE_LINK),
-            InlineKeyboardButton("Показать ссылки", callback_data=MENU_CALLBACK_SHOW_LINKS),
-            InlineKeyboardButton("Удалить все ссылки", callback_data=MENU_CALLBACK_DELETE_ALL_LINKS),
+            InlineKeyboardButton("Создать уникальную ссылку", callback_data=MENU_CALLBACK_CREATE_LINK)
         ]
     ]
     reply_markup = InlineKeyboardMarkup(menu_keyboard)
