@@ -45,7 +45,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return ConversationHandler.END
         
         # Переходим в состояние, запрашиваем имя ссылки
-        await query.edit_message_text("Введите свой Telegram тэг:")
+        await query.edit_message_text("Введите свой Telegram @тэг:")
         return ASKING_LINK_NAME
     elif query.data == MENU_CALLBACK_SHOW_LINKS:
         links_info = get_links_info()
