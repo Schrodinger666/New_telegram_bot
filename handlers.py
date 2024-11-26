@@ -1,5 +1,5 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes
+from telegram.ext import ContextTypes, ConversationHandler
 from config import CHAT_ID
 from link_manager import link_name_exists, add_link, get_links_info, delete_all_links, user_has_link, add_user_link
 
@@ -45,8 +45,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return ConversationHandler.END
         
         # Переходим в состояние, запрашиваем имя ссылки
-        await query.edit_message_text("Введите свой Telegram @тэг:")
+        await query.edit_message_text("Введите свой Telegram @тэг для создания уникальной ссылки:")
         return ASKING_LINK_NAME
+    
     elif query.data == MENU_CALLBACK_SHOW_LINKS:
         links_info = get_links_info()
         if links_info:
@@ -59,10 +60,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.edit_message_text(response)
         else:
             await query.edit_message_text("Пока нет созданных ссылок.")
+    
     elif query.data == MENU_CALLBACK_DELETE_ALL_LINKS:
         # Вызываем функцию для удаления всех ссылок
         await delete_all_links(context)
         await query.edit_message_text("Все ссылки были отозваны и удалены.")
+
     return ConversationHandler.END
 
 async def link_name_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -84,8 +87,9 @@ async def link_name_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=CHAT_ID,
             name=link_name  # Назначаем имя ссылке
         )
+        
         # Сохраняем информацию о ссылке
-        add_link(link_name, chat_invite_link)
+        add_link(link_name, chat_invite_link.invite_link)
         add_user_link(user_id, link_name)  # Store the user's created link name
         await update.message.reply_text(f"Ссылка создана:\nИмя: {link_name}\nСсылка: {chat_invite_link.invite_link}")
 
