@@ -1,7 +1,8 @@
 import logging
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ConversationHandler, MessageHandler, filters
 import config
-from handlers import (start_command, button_handler, link_name_handler, cancel, ASKING_LINK_NAME)
+from handlers import (start_command, button_handler, link_name_handler, cancel,
+                      ASKING_LINK_NAME, MENU_CALLBACK_CREATE_LINK, MENU_CALLBACK_SHOW_LINKS, MENU_CALLBACK_DELETE_ALL_LINKS)
 
 # Включаем логирование
 logging.basicConfig(
@@ -18,7 +19,7 @@ def main():
 
     # ConversationHandler для создания ссылки
     conv_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(button_handler, pattern="^create_link$")],
+        entry_points=[CallbackQueryHandler(button_handler, pattern=f"^{MENU_CALLBACK_CREATE_LINK}$")],
         states={
             ASKING_LINK_NAME: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, link_name_handler)
@@ -35,3 +36,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
