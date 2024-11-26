@@ -15,7 +15,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # Отправка приветственного сообщения
     await update.message.reply_text(
-        "Привет! Я - 🎓Decentrathon Link Bot🚀🎓.\n\n"
+        "Привет! Я - 🎓Decentrathon Referral🚀🎓.\n\n"
         "Сидишь в нашем канале? Пригласи больше народу!\n"
         "Пропиши команду /start для начала!"
     )
@@ -45,7 +45,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return ConversationHandler.END
         
         # Переходим в состояние, запрашиваем имя ссылки
-        await query.edit_message_text("Введите уникальное имя для ссылки:")
+        await query.edit_message_text("Введите свой Telegram тэг:")
         return ASKING_LINK_NAME
     elif query.data == MENU_CALLBACK_SHOW_LINKS:
         links_info = get_links_info()
