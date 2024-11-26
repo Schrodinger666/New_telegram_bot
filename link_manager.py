@@ -2,6 +2,7 @@ from config import CHAT_ID
 
 # Хранилище ссылок: словарь со структурой { link_name: link_data }
 links_data = {}
+user_links = {}  # This will store the user IDs and their created link names
 
 def link_name_exists(link_name):
     """Проверяет, существует ли ссылка с указанным именем."""
@@ -19,6 +20,14 @@ def add_link(link_name, link_object):
 def get_links_info():
     """Возвращает информацию обо всех созданных ссылках."""
     return links_data
+
+def user_has_link(user_id):
+    """Проверяет, создал ли пользователь ссылку."""
+    return user_id in user_links
+
+def add_user_link(user_id, link_name):
+    """Добавляет пользователя и его созданную ссылку."""
+    user_links[user_id] = link_name
 
 async def delete_all_links(context):
     """Удаляет все созданные ссылки, отзывает их в чате и очищает хранилище."""
@@ -42,3 +51,4 @@ async def delete_all_links(context):
 
     # Удаляем все ссылки из хранилища
     links_data.clear()
+    user_links.clear()  # Clear the user links as well

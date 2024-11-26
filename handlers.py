@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from config import CHAT_ID
-from link_manager import link_name_exists, add_link, get_links_info, delete_all_links
+from link_manager import link_name_exists, add_link, get_links_info, delete_all_links, user_has_link, add_user_link
 
 MENU_CALLBACK_CREATE_LINK = "create_link"
 MENU_CALLBACK_SHOW_LINKS = "show_links"
@@ -38,6 +38,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     if query.data == MENU_CALLBACK_CREATE_LINK:
+        # Check if the user has already created a link
+        user_id = update.effective_user.id
+        if user_has_link(user_id):
+            await query.edit_message_text("Вы уже создали ссылку. Вы не можете создать более одной.")
+            return ConversationHandler.END
+        
         # Переходим в состояние, запрашиваем имя ссылки
         await query.edit_message_text("Введите уникальное имя для ссылки:")
         return ASKING_LINK_NAME
@@ -62,6 +68,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def link_name_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обрабатывает имя ссылки, введённое пользователем."""
     link_name = update.message.text.strip()
+    user_id = update.effective_user.id
+
+    if user_has_link(user_id):
+        await update.message.reply_text("Вы уже создали ссылку. Вы не можете создать более одной.")
+        return ConversationHandler.END
 
     if link_name_exists(link_name):
         # Имя занято, просим ввести другое
@@ -75,6 +86,7 @@ async def link_name_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         # Сохраняем информацию о ссылке
         add_link(link_name, chat_invite_link)
+        add_user_link(user_id, link_name)  # Store the user's created link name
         await update.message.reply_text(f"Ссылка создана:\nИмя: {link_name}\nСсылка: {chat_invite_link.invite_link}")
 
     return ConversationHandler.END
