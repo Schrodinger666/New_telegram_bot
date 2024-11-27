@@ -89,7 +89,7 @@ async def link_name_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         
         # Сохраняем информацию о ссылке
-        add_link(link_name, chat_invite_link.invite_link)
+        add_link(link_name, chat_invite_link)
         add_user_link(user_id, link_name)  # Store the user's created link name
         await update.message.reply_text(f"Ссылка создана:\nИмя: {link_name}\nСсылка: {chat_invite_link.invite_link}")
 
